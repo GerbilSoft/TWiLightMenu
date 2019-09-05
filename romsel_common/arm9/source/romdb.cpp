@@ -59,72 +59,86 @@ bool checkRomAP(const char *game_TID, u16 headerCRC16)
 	}
 
 	// Check for SDK4-5 ROMs that don't have AP measures.
-	if ((memcmp(game_TID, "AZLJ", 4) == 0)  // Girls Mode (JAP version of Style Savvy)
-	 || (memcmp(game_TID, "YEEJ", 4) == 0)  // Inazuma Eleven (J)
-	 || (memcmp(game_TID, "VSO",  3) == 0)  // Sonic Classic Collection
-	 || (memcmp(game_TID, "B2D",  3) == 0)  // Doctor Who: Evacuation Earth
-	 || (memcmp(game_TID, "BWB",  3) == 0)  // Plants vs Zombies
-	 || (memcmp(game_TID, "VDX",  3) == 0)	  // Daniel X: The Ultimate Power
-	 || (memcmp(game_TID, "BUD",  3) == 0)	  // River City Super Sports Challenge
-	 || (memcmp(game_TID, "B3X",  3) == 0)	  // River City Soccer Hooligans
-	 || (memcmp(game_TID, "BZX",  3) == 0)	  // Puzzle Quest 2
-	 || (memcmp(game_TID, "BRFP", 4) == 0)	 // Rune Factory 3 - A Fantasy Harvest Moon
-	 || (memcmp(game_TID, "BDX",  3) == 0)   // Minna de Taikan Dokusho DS: Choo Kowaai!: Gakkou no Kaidan
-	 || (memcmp(game_TID, "TFB",  3) == 0)  // Frozen: Olaf's Quest
-	 || (memcmp(game_TID, "B88",  3) == 0)) // DS WiFi Settings
-	{
-		return false;
-	}
-	else
-	// Check for ROMs that have AP measures.
-	if ((memcmp(game_TID, "B", 1) == 0)
-	 || (memcmp(game_TID, "T", 1) == 0)
-	 || (memcmp(game_TID, "V", 1) == 0)) {
-		return true;
-	} else {
-		static const char ap_list[][4] = {
-			"ABT",	// Bust-A-Move DS
-			"YHG",	// Houkago Shounen
-			"YWV",	// Taiko no Tatsujin DS: Nanatsu no Shima no Daibouken!
-			"AS7",	// Summon Night: Twin Age
-			"YFQ",	// Nanashi no Geemu
-			"AFX",	// Final Fantasy Crystal Chronicles: Ring of Fates
-			"YV5",	// Dragon Quest V: Hand of the Heavenly Bride
-			"CFI",	// Final Fantasy Crystal Chronicles: Echoes of Time
-			"CCU",	// Tomodachi Collection
-			"CLJ",	// Mario & Luigi: Bowser's Inside Story
-			"YKG",	// Kindgom Hearts: 358/2 Days
-			"COL",	// Mario & Sonic at the Olympic Winter Games
-			"C24",	// Phantasy Star 0
-			"AZL",	// Style Savvy
-			"CS3",	// Sonic and Sega All Stars Racing
-			"IPK",	// Pokemon HeartGold Version
-			"IPG",	// Pokemon SoulSilver Version
-			"YBU",	// Blue Dragon: Awakened Shadow
-			"YBN",	// 100 Classic Books
-			"YVI",	// Dragon Quest VI: Realms of Revelation
-			"YDQ",	// Dragon Quest IX: Sentinels of the Starry Skies
-			"C3J",	// Professor Layton and the Unwound Future
-			"IRA",	// Pokemon Black Version
-			"IRB",	// Pokemon White Version
-			"CJR",	// Dragon Quest Monsters: Joker 2
-			"YEE",	// Inazuma Eleven
-			"UZP",	// Learn with Pokemon: Typing Adventure
-			"IRE",	// Pokemon Black Version 2
-			"IRD",	// Pokemon White Version 2
-		};
+	static const char ap_list_sdk45_4[][5] = {
+		"AZLJ",	// Girls Mode (JPN version of Style Savvy)
+		"YEEJ",	// Inazuma Eleven (J)
+		"BRFP",	// Rune Factory 3 - A Fantasy Harvest Moon (E)
+	};
+	static const char ap_list_sdk45_3[][4] = {
+		"VSO",	// Sonic Classic Collection
+		"B2D",	// Doctor Who: Evacuation Earth
+		"BWB",	// Plants vs Zombies
+		"VDX",	// Daniel X: The Ultimate Power
+		"BUD",	// River City Super Sports Challenge
+		"B3X",	// River City Soccer Hooligans
+		"BZX",	// Puzzle Quest 2
+		"BDX",	// Minna de Taikan Dokusho DS: Choo Kowaai!: Gakkou no Kaidan
+		"TFB",	// Frozen: Olaf's Quest
+		"B88",	// DS WiFi Settings
+	};
 
-		// TODO: If the list gets large enough, switch to bsearch().
-		for (unsigned int i = 0; i < sizeof(ap_list)/sizeof(ap_list[0]); i++) {
-			if (memcmp(game_TID, ap_list[i], 3) == 0) {
-				// Found a match.
-				return true;
-				break;
-			}
+	// TODO: If the lists get large enough, switch to bsearch().
+	for (unsigned int i = 0; i < sizeof(ap_list_sdk45_4)/sizeof(ap_list_sdk45_4[0]); i++) {
+		if (memcmp(game_TID, ap_list_sdk45_4[i], 4) == 0) {
+			// Found a match. No AP here.
+			return false;
 		}
-
+	}
+	for (unsigned int i = 0; i < sizeof(ap_list_sdk45_3)/sizeof(ap_list_sdk45_3[0]); i++) {
+		if (memcmp(game_TID, ap_list_sdk45_3[i], 3) == 0) {
+			// Found a match. No AP here.
+			return false;
+		}
 	}
 
+	// Check for ROMs that have AP measures.
+	if (game_TID[0] == 'B' || game_TID[0] == 'T' || game_TID[0] == 'V') {
+		// Assuming Bxxx, Txxx, and Vxxx have anti-piracy by default.
+		return true;
+	}
+
+	// Known AP list for other titles.
+	static const char ap_list[][4] = {
+		"ABT",	// Bust-A-Move DS
+		"YHG",	// Houkago Shounen
+		"YWV",	// Taiko no Tatsujin DS: Nanatsu no Shima no Daibouken!
+		"AS7",	// Summon Night: Twin Age
+		"YFQ",	// Nanashi no Geemu
+		"AFX",	// Final Fantasy Crystal Chronicles: Ring of Fates
+		"YV5",	// Dragon Quest V: Hand of the Heavenly Bride
+		"CFI",	// Final Fantasy Crystal Chronicles: Echoes of Time
+		"CCU",	// Tomodachi Collection
+		"CLJ",	// Mario & Luigi: Bowser's Inside Story
+		"YKG",	// Kindgom Hearts: 358/2 Days
+		"COL",	// Mario & Sonic at the Olympic Winter Games
+		"C24",	// Phantasy Star 0
+		"AZL",	// Style Savvy
+		"CS3",	// Sonic and Sega All Stars Racing
+		"IPK",	// Pokemon HeartGold Version
+		"IPG",	// Pokemon SoulSilver Version
+		"YBU",	// Blue Dragon: Awakened Shadow
+		"YBN",	// 100 Classic Books
+		"YVI",	// Dragon Quest VI: Realms of Revelation
+		"YDQ",	// Dragon Quest IX: Sentinels of the Starry Skies
+		"C3J",	// Professor Layton and the Unwound Future
+		"IRA",	// Pokemon Black Version
+		"IRB",	// Pokemon White Version
+		"CJR",	// Dragon Quest Monsters: Joker 2
+		"YEE",	// Inazuma Eleven
+		"UZP",	// Learn with Pokemon: Typing Adventure
+		"IRE",	// Pokemon Black Version 2
+		"IRD",	// Pokemon White Version 2
+	};
+
+	// TODO: If the list gets large enough, switch to bsearch().
+	for (unsigned int i = 0; i < sizeof(ap_list)/sizeof(ap_list[0]); i++) {
+		if (memcmp(game_TID, ap_list[i], 3) == 0) {
+			// Found a match. We have AP.
+			return true;
+		}
+	}
+
+	// No AP for this title.
 	return false;
 }
 
