@@ -36,7 +36,9 @@
 
 #include "date.h"
 
-#include "ndsheaderbanner.h"
+#include "ndsbanner.h"
+#include "romdb.h"
+
 #include "iconTitle.h"
 #include "graphics/fontHandler.h"
 #include "graphics/graphics.h"
@@ -221,10 +223,10 @@ void perGameSettings (std::string filename) {
 	bool showSDKVersion = false;
 	u32 SDKVersion = 0;
 	if (memcmp(gameTid[CURPOS], "HND", 3) == 0 || memcmp(gameTid[CURPOS], "HNE", 3) == 0) {
-		SDKVersion = getSDKVersion(f_nds_file);
+		SDKVersion = getSDKVersion(f_nds_file, true);
 		showSDKVersion = true;
 	} else if(isHomebrew[CURPOS] == 0) {
-		SDKVersion = getSDKVersion(f_nds_file);
+		SDKVersion = getSDKVersion(f_nds_file, true);
 		showSDKVersion = true;
 		if (!ms().useBootstrap && ms().secondaryDevice) {
 			perGameSettings_cursorPosition = 2;

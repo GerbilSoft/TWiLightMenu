@@ -53,13 +53,12 @@ u32 findModuleParamsOffset(const sNDSHeaderExt *ndsHeader, FILE *ndsFile)
 			}
 		}
 	}
-	
+
 	return (u32)NULL;
 }
 
 module_params_t *getModuleParams(const sNDSHeaderExt *ndsHeader, FILE *ndsFile)
 {
-
 	u32 moduleParamsOffset = findModuleParamsOffset(ndsHeader, ndsFile);
 	fseek(ndsFile, moduleParamsOffset, SEEK_SET);
 	fread(moduleParamsBuf, sizeof(module_params_t), 1, ndsFile);

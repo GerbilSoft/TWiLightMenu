@@ -48,8 +48,10 @@
 #include "fileBrowse.h"
 #include "nds_loader_arm9.h"
 #include "gbaswitch.h"
-#include "ndsheaderbanner.h"
 #include "perGameSettings.h"
+
+#include "ndsheader.h"
+#include "ndsbanner.h"
 
 #include "graphics/fontHandler.h"
 #include "graphics/iconHandler.h"

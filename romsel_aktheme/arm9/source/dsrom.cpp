@@ -23,10 +23,10 @@
 #include "fileicons.h"
 #include "icons.h"
 #include "common/dsimenusettings.h"
-#include "common/module_params.h"
-#include "common/ndsheader.h"
 #include "common/dsargv.h"
 #include "common/fixedbanners.h"
+
+#include "module_params.h"
 
 #include "nds_banner_bin.h"
 #include "unknown_nds_banner_bin.h"

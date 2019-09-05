@@ -6,9 +6,9 @@ PACKAGE		:=	7zfile
 #---------------------------------------------------------------------------------
 # Goals for Build
 #---------------------------------------------------------------------------------
-.PHONY: all package booter booter_fc quickmenu manual romsel_aktheme romsel_dsimenutheme romsel_r4theme rungame settings slot1launch title
+.PHONY: all package booter booter_fc romsel_common quickmenu manual romsel_aktheme romsel_dsimenutheme romsel_r4theme rungame settings slot1launch title
 
-all:	booter booter_fc quickmenu manual romsel_aktheme romsel_dsimenutheme romsel_r4theme rungame settings slot1launch title
+all:	booter booter_fc romsel_common quickmenu manual romsel_aktheme romsel_dsimenutheme romsel_r4theme rungame settings slot1launch title
 
 package: all
 	@mkdir -p "$(PACKAGE)"
@@ -36,6 +36,9 @@ booter:
 
 booter_fc:
 	@$(MAKE) -C booter_fc
+
+romsel_common:
+	@$(MAKE) -C romsel_common
 
 quickmenu:
 	@$(MAKE) -C quickmenu
@@ -68,6 +71,7 @@ clean:
 	@echo clean build directories
 	@$(MAKE) -C booter clean
 	@$(MAKE) -C booter_fc clean
+	@$(MAKE) -C romsel_common clean
 	@$(MAKE) -C quickmenu clean
 	@$(MAKE) -C manual clean
 	@$(MAKE) -C romsel_aktheme clean

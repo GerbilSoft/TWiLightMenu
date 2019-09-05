@@ -50,6 +50,8 @@
 #include "common/dsimenusettings.h"
 #include "windows/rominfownd.h"
 
+#include "ndsheader.h"
+
 #include "sr_data_srllastran.h"
 
 #include <nds/arm9/dldi.h>

@@ -29,12 +29,14 @@
 #include "graphics/queueControl.h"
 #include "graphics/ThemeTextures.h"
 #include "language.h"
-#include "ndsheaderbanner.h"
 #include "common/tonccpy.h"
 #include <ctype.h>
 #include <nds.h>
 #include <stdio.h>
 #include <sys/stat.h>
+
+#include "ndsheader.h"
+#include "ndsbanner.h"
 
 #define LEFT_ALIGN 70
 #define ICON_POS_X 112

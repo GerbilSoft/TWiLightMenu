@@ -38,7 +38,7 @@
 #include "../errorScreen.h"
 #include "../iconTitle.h"
 #include "../language.h"
-#include "../ndsheaderbanner.h"
+#include "../ndsbanner.h"
 #include "../perGameSettings.h"
 #include "common/dsimenusettings.h"
 #include "common/flashcard.h"

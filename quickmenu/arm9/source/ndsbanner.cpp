@@ -4,47 +4,16 @@
 #include <unistd.h>
 #include "common/gl2d.h"
 
-#include "ndsheaderbanner.h"
+#include "ndsbanner.h"
+#include "ndsheader.h"
 #include "module_params.h"
 
 extern sNDSBannerExt ndsBanner;
-
-// Needed to test if homebrew
-char tidBuf[4];
 
 typedef enum
 {
 	GL_FLIP_BOTH = (1 << 3)
 } GL_FLIP_MODE_XTRA;
-
-/**
- * Get the title ID.
- * @param ndsFile DS ROM image.
- * @param buf Output buffer for title ID. (Must be at least 4 characters.)
- * @return 0 on success; non-zero on error.
- */
-int grabTID(FILE *ndsFile, char *buf)
-{
-	fseek(ndsFile, offsetof(sNDSHeaderExt, gameCode), SEEK_SET);
-	size_t read = fread(buf, 1, 4, ndsFile);
-	return !(read == 4);
-}
-
-/**
- * Get SDK version from an NDS file.
- * @param ndsFile NDS file.
- * @param filename NDS ROM filename.
- * @return 0 on success; non-zero on error.
- */
-u32 getSDKVersion(FILE *ndsFile)
-{
-	sNDSHeaderExt NDSHeader;
-	fseek(ndsFile, 0, SEEK_SET);
-	fread(&NDSHeader, 1, sizeof(NDSHeader), ndsFile);
-	if (NDSHeader.arm7destination >= 0x037F8000 || grabTID(ndsFile, tidBuf) != 0)
-		return 0;
-	return getModuleParams(&NDSHeader, ndsFile)->sdk_version;
-}
 
 // bnriconframeseq[]
 static u16 bnriconframeseq[64] = {0x0000};

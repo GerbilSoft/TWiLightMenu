@@ -2,10 +2,18 @@
 \brief Defines the Nintendo DS file header and icon/title structs.
 */
 
-#ifndef NDS_HEADER2
-#define NDS_HEADER2
+#ifndef __ROMSEL_COMMON_NDS_HEADER_H__
+#define __ROMSEL_COMMON_NDS_HEADER_H__
 
 #include <nds.h>
+
+// Bitmasks from
+// http://problemkaputt.de/gbatek.htm#dscartridgeicontitle
+#define SEQ_FLIPV(i) ((i & 0b1000000000000000) >> 15)
+#define SEQ_FLIPH(i) ((i & 0b0100000000000000) >> 14)
+#define SEQ_PAL(i) ((i & 0b0011100000000000) >> 11)
+#define SEQ_BMP(i) ((i & 0b0000011100000000) >> 8)
+#define SEQ_DUR(i) ((i & 0b0000000011111111) >> 0)
 
 /*!
 	\brief the GBA file header format.
@@ -109,12 +117,6 @@ typedef struct {
 	u8 dsi2[0x174];
 } sNDSHeaderExt;
 
-typedef struct {
-	char gameTitle[12];			//!< 12 characters for the game title.
-	char gameCode[4];			//!< 4 characters for the game code.
-} sNDSHeadertitlecodeonly;
-
-
 //#define __NDSHeader ((tNDSHeader *)0x02FFFE00)
 
 // Make sure the banner size is correct.
@@ -181,4 +183,4 @@ typedef enum {
 	N3DS_LANG_CHINESE_TRADITIONAL	= 11,
 } sNDSLanguage;
 
-#endif
+#endif /* __ROMSEL_COMMON_NDS_HEADER_H__ */

@@ -40,11 +40,14 @@
 #include "common/tonccpy.h"
 #include "common/nitrofs.h"
 #include "flashcard.h"
-#include "ndsheaderbanner.h"
 #include "gbaswitch.h"
 #include "nds_loader_arm9.h"
 #include "perGameSettings.h"
 #include "errorScreen.h"
+
+#include "ndsheader.h"
+#include "ndsbanner.h"
+#include "romdb.h"
 
 #include "iconTitle.h"
 #include "graphics/fontHandler.h"

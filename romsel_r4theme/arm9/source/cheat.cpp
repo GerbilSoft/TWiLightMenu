@@ -27,7 +27,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "ndsheaderbanner.h"
+#include "ndsbanner.h"
+
 #include "iconTitle.h"
 #include "graphics/fontHandler.h"
 #include "errorScreen.h"

@@ -36,7 +36,9 @@
 
 #include "date.h"
 
-#include "ndsheaderbanner.h"
+#include "ndsbanner.h"
+#include "romdb.h"
+
 #include "flashcard.h"
 #include "iconTitle.h"
 #include "graphics/fontHandler.h"

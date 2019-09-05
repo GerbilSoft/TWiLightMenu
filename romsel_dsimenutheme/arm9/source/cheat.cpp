@@ -30,7 +30,6 @@
 #include <fstream>
 #include <sstream>
 
-#include "ndsheaderbanner.h"
 #include "iconTitle.h"
 #include "graphics/fontHandler.h"
 #include "graphics/graphics.h"

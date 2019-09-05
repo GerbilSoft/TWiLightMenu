@@ -46,8 +46,10 @@
 #include "graphics/graphics.h"
 #include "graphics/iconHandler.h"
 #include "iconTitle.h"
-#include "ndsheaderbanner.h"
 #include "perGameSettings.h"
+
+#include "ndsbanner.h"
+#include "romdb.h"
 
 #include "gbaswitch.h"
 #include "nds_loader_arm9.h"
@@ -2362,10 +2364,7 @@ string browseForFile(const vector<string> extensionList) {
 					if (ms().useBootstrap && bnrRomType[CURPOS] == 0 && !isDSiWare[CURPOS] &&
 					    isHomebrew[CURPOS] == 0 &&
 					    checkIfShowAPMsg(dirContents[scrn].at(CURPOS + PAGENUM * 40).name)) {
-						FILE *f_nds_file = fopen(
-						    dirContents[scrn].at(CURPOS + PAGENUM * 40).name.c_str(), "rb");
-						hasAP = checkRomAP(f_nds_file, CURPOS);
-						fclose(f_nds_file);
+						hasAP = checkRomAP(gameTid[CURPOS], headerCRC[CURPOS]);
 					} else if (bnrRomType[CURPOS] == 5 || bnrRomType[CURPOS] == 6) {
 						smsWarning();
 					} else if (bnrRomType[CURPOS] == 7) {

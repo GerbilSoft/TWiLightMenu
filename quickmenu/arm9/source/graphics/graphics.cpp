@@ -41,7 +41,7 @@
 #include "graphics.h"
 #include "graphics/lodepng.h"
 #include "fontHandler.h"
-#include "../ndsheaderbanner.h"
+#include "../ndsbanner.h"
 #include "../errorScreen.h"
 
 #define CONSOLE_SCREEN_WIDTH 32

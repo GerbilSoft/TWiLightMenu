@@ -27,8 +27,10 @@
 #include <sys/stat.h>
 #include "common/gl2d.h"
 #include "graphics/fontHandler.h"
-#include "ndsheaderbanner.h"
 #include "language.h"
+
+#include "ndsheader.h"
+#include "ndsbanner.h"
 
 #define ICON_POS_X	112
 #define ICON_POS_Y	96
