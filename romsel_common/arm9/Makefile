@@ -19,9 +19,9 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	romsel_common
 BUILD		:=	build
-SOURCES		:=	source source/common source/graphics source/tool
+SOURCES		:=	source source/graphics
 INCLUDES	:=	include source
-DATA		:=	../data  
+DATA		:=	../data
 GRAPHICS	:=  ../gfx
 MUSIC       :=  ../music
 MUSIC2      :=  ../musicShop
@@ -29,7 +29,7 @@ MUSIC2      :=  ../musicShop
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-mthumb-interwork
+ARCH	:=	-mthumb -mthumb-interwork
 
 CFLAGS	:=	-g -Wall -O2 \
  			-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
