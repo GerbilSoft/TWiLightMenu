@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <maxmod9.h>
 
-#include "common/lzss.h"
+#include "lzss.h"
 #include "common/dsimenusettings.h"
 #include "common/systemdetails.h"
 

@@ -43,7 +43,7 @@
 #include "common/dsimenusettings.h"
 #include "common/flashcard.h"
 #include "common/systemdetails.h"
-#include "common/lzss.h"
+#include "lzss.h"
 #include "fontHandler.h"
 #include "graphics.h"
 #include "graphics/ThemeTextures.h"
