@@ -51,6 +51,7 @@
 #include "windows/rominfownd.h"
 
 #include "ndsheader.h"
+#include "romdb.h"
 
 #include "sr_data_srllastran.h"
 
@@ -656,90 +657,28 @@ void MainWnd::bootBootstrap(PerGameSettings &gameConfig, DSRomInfo &rominfo)
         config.language(gameConfig.language);
     }
 
-	bool hasAP = false;
-    PerGameSettings settingsIni(_mainList->getSelectedShowName().c_str());
+	PerGameSettings settingsIni(_mainList->getSelectedShowName().c_str());
 
-	char gameTid[5] = {0};
-	snprintf(gameTid, 4, "%s", rominfo.saveInfo().gameCode);
-
+	char gameTid[5];
+	memcpy(gameTid, rominfo.saveInfo().gameCode, 4);
+	gameTid[4] = 0;
+ 
+	// TODO: Consolidate the various branches here.
 	char ipsPath[256];
 	snprintf(ipsPath, sizeof(ipsPath), "sd:/_nds/TWiLightMenu/apfix/%s-%X.ips", gameTid, rominfo.saveInfo().gameCRC);
 
 	if (settingsIni.checkIfShowAPMsg() && (access(ipsPath, F_OK) != 0)) {
 		// Check for SDK4-5 ROMs that don't have AP measures.
-		if ((memcmp(rominfo.saveInfo().gameCode, "AZLJ", 4) == 0)   // Girls Mode (JAP version of Style Savvy)
-		 || (memcmp(rominfo.saveInfo().gameCode, "YEEJ", 4) == 0)   // Inazuma Eleven (J)
-		 || (memcmp(rominfo.saveInfo().gameCode, "VSO",  3) == 0)   // Sonic Classic Collection
-		 || (memcmp(rominfo.saveInfo().gameCode, "B2D",  3) == 0)   // Doctor Who: Evacuation Earth
-		 || (memcmp(rominfo.saveInfo().gameCode, "BWB",  3) == 0)	  // Plants vs Zombies
-		 || (memcmp(rominfo.saveInfo().gameCode, "VDX",  3) == 0)	  // Daniel X: The Ultimate Power
-		 || (memcmp(rominfo.saveInfo().gameCode, "BUD",  3) == 0)	  // River City Super Sports Challenge
-		 || (memcmp(rominfo.saveInfo().gameCode, "B3X",  3) == 0)	  // River City Soccer Hooligans
-		 || (memcmp(rominfo.saveInfo().gameCode, "BZX",  3) == 0)	  // Puzzle Quest 2
-		 || (memcmp(rominfo.saveInfo().gameCode, "BRFP", 4) == 0)	  // Rune Factory 3 - A Fantasy Harvest Moon
-		 || (memcmp(rominfo.saveInfo().gameCode, "BDX",  3) == 0)   // Minna de Taikan Dokusho DS: Choo Kowaai!: Gakkou no Kaidan
-		 || (memcmp(rominfo.saveInfo().gameCode, "TFB",  3) == 0)   // Frozen: Olaf's Quest
-		 || (memcmp(rominfo.saveInfo().gameCode, "B88",  3) == 0))  // DS WiFi Settings
-		{
-			hasAP = false;
-		}
-		else
-		// Check for ROMs that have AP measures.
-		if ((memcmp(rominfo.saveInfo().gameCode, "B", 1) == 0)
-		 || (memcmp(rominfo.saveInfo().gameCode, "T", 1) == 0)
-		 || (memcmp(rominfo.saveInfo().gameCode, "V", 1) == 0)) {
-			hasAP = true;
-		} else {
-			static const char ap_list[][4] = {
-				"ABT",	// Bust-A-Move DS
-				"YHG",	// Houkago Shounen
-				"YWV",	// Taiko no Tatsujin DS: Nanatsu no Shima no Daibouken!
-				"AS7",	// Summon Night: Twin Age
-				"YFQ",	// Nanashi no Geemu
-				"AFX",	// Final Fantasy Crystal Chronicles: Ring of Fates
-				"YV5",	// Dragon Quest V: Hand of the Heavenly Bride
-				"CFI",	// Final Fantasy Crystal Chronicles: Echoes of Time
-				"CCU",	// Tomodachi Collection
-				"CLJ",	// Mario & Luigi: Bowser's Inside Story
-				"YKG",	// Kindgom Hearts: 358/2 Days
-				"COL",	// Mario & Sonic at the Olympic Winter Games
-				"C24",	// Phantasy Star 0
-				"AZL",	// Style Savvy
-				"CS3",	// Sonic and Sega All Stars Racing
-				"IPK",	// Pokemon HeartGold Version
-				"IPG",	// Pokemon SoulSilver Version
-				"YBU",	// Blue Dragon: Awakened Shadow
-				"YBN",	// 100 Classic Books
-				"YVI",	// Dragon Quest VI: Realms of Revelation
-				"YDQ",	// Dragon Quest IX: Sentinels of the Starry Skies
-				"C3J",	// Professor Layton and the Unwound Future
-				"IRA",	// Pokemon Black Version
-				"IRB",	// Pokemon White Version
-				"CJR",	// Dragon Quest Monsters: Joker 2
-				"YEE",	// Inazuma Eleven
-				"UZP",	// Learn with Pokemon: Typing Adventure
-				"IRE",	// Pokemon Black Version 2
-				"IRD",	// Pokemon White Version 2
-			};
+		bool hasAP = checkRomAP(gameTid, rominfo.saveInfo().gameCRC);
 
-			// TODO: If the list gets large enough, switch to bsearch().
-			for (unsigned int i = 0; i < sizeof(ap_list)/sizeof(ap_list[0]); i++) {
-				if (memcmp(rominfo.saveInfo().gameCode, ap_list[i], 3) == 0) {
-					// Found a match.
-					hasAP = true;
-					break;
-				}
-			}
-
-		}
-
-        int optionPicked = 0;
+		int optionPicked = 0;
 
 		if (hasAP)
 		{
-			optionPicked = messageBox(this, "Warning", "This game may not work correctly, if it's not AP-patched. "
-										"If the game freezes, does not start, or doesn't seem normal, "
-										"it needs to be AP-patched.", MB_OK | MB_HOLD_X | MB_CANCEL);
+			optionPicked = messageBox(this, "Warning",
+				"This game may not work correctly, if it's not AP-patched. "
+				"If the game freezes, does not start, or doesn't seem normal, "
+				"it needs to be AP-patched.", MB_OK | MB_HOLD_X | MB_CANCEL);
 		}
 
 		scanKeys();
