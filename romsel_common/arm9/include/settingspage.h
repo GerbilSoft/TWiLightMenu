@@ -417,24 +417,24 @@ public:
   {
     if (auto value = std::get_if<Bool>(&action()))
     {
-      for (int i = 0; i < ((int)_values.size()); i++)
+      for (size_t i = 0; i < _values.size(); i++)
       {
         if (auto _value = std::get_if<bool>(&_values[i]))
         {
           if (*_value == value->get())
-            return i;
+            return static_cast<int>(i);
         }
       }
     }
 
     if (auto value = std::get_if<Int>(&action()))
     {
-      for (unsigned int i = 0; i < _values.size(); i++)
+      for (size_t i = 0; i < _values.size(); i++)
       {
         if (auto _value = std::get_if<int>(&_values[i]))
         {
           if (*_value == value->get())
-            return i;
+            return static_cast<int>(i);
         }
       }
     }
@@ -442,12 +442,12 @@ public:
     if (auto value = std::get_if<Str>(&action()))
     {
       //nocashMessage(value->get().c_str());
-      for (unsigned int i = 0; i < _values.size(); i++)
+      for (size_t i = 0; i < _values.size(); i++)
       {
         if (auto _value = std::get_if<cstr>(&_values[i]))
         {
           if (value->get().compare(*_value) == 0)
-            return i;
+            return static_cast<int>(i);
         }
       }
     }
