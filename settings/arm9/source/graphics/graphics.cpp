@@ -22,7 +22,7 @@
 #include <maxmod9.h>
 #include "common/dsimenusettings.h"
 #include "common/gl2d.h"
-#include "bios_decompress_callback.h"
+#include "graphics/bios_decompress_callback.h"
 #include "FontGraphic.h"
 #include "top_bg.h"
 #include "sub_bg.h"

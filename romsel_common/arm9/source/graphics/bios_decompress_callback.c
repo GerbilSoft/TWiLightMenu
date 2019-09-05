@@ -16,23 +16,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef BIOS_DECOMPRESS_CALLBACK_H
-#define BIOS_DECOMPRESS_CALLBACK_H
+#include "graphics/bios_decompress_callback.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <nds/bios.h>
-#include <nds/ndstypes.h>
-
-extern TDecompressionStream decompressBiosCallback;
-
-
-
-#ifdef __cplusplus
+int getSizeBiosCallback (uint8 * source, uint16 * dest, uint32 r2)
+{
+	return *((int*)source);
 }
-#endif
 
-#endif // BIOS_DECOMPRESS_CALLBACK_H
+uint8 readByteBiosCallback (uint8 * source)
+{
+	return *source;
+}
+
+TDecompressionStream decompressBiosCallback =
+{
+  getSizeBiosCallback,
+  (void*)0,
+  readByteBiosCallback
+} ;
+
 

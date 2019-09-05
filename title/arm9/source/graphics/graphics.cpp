@@ -21,7 +21,7 @@
 #include <nds.h>
 #include <nds/dma.h>
 #include <maxmod9.h>
-#include "bios_decompress_callback.h"
+#include "graphics/bios_decompress_callback.h"
 #include "common/dsimenusettings.h"
 #include "common/gl2d.h"
 #include "graphics.h"
