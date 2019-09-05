@@ -27,7 +27,7 @@ include $(DEVKITARM)/ds_rules
 TARGET		:=	settings
 BUILD		:=	build
 SOURCES		:=	source source/graphics source/tool source/common
-INCLUDES	:=	include source
+INCLUDES	:=	include source ../../romsel_common/arm9/include
 DATA		:=	../data  
 GRAPHICS	:=  ../gfx
 MUSIC       :=  ../music
@@ -52,14 +52,14 @@ LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project (order is important)
 #---------------------------------------------------------------------------------
-LIBS	:= 	-lfat -lmm9 -lnds9
+LIBS	:= 	-lromsel_common.arm9 -lfat -lmm9 -lnds9
  
  
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:=	$(CURDIR) ../ $(LIBNDS)
+LIBDIRS	:=	$(CURDIR) ../ $(LIBNDS) ../../../romsel_common
  
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional

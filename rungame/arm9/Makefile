@@ -20,7 +20,7 @@ include $(DEVKITARM)/ds_rules
 TARGET		:=	rungame
 BUILD		:=	build
 SOURCES		:=	source dldi-include
-INCLUDES	:=	include dldi-include
+INCLUDES	:=	include dldi-include ../../romsel_common/arm9/include
 DATA		:=	../data  
 GRAPHICS	:=  ../gfx
 MUSIC       :=  ../music
@@ -44,14 +44,14 @@ LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project (order is important)
 #---------------------------------------------------------------------------------
-LIBS	:= 	-lfat -lnds9
+LIBS	:= 	-lromsel_common.arm9 -lfat -lnds9
  
  
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:=	$(CURDIR) ../ $(LIBNDS)
+LIBDIRS	:=	$(CURDIR) ../ $(LIBNDS) ../../../romsel_common
  
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional

@@ -34,6 +34,8 @@
 
 #include "graphics/graphics.h"
 
+#include "fileCopy.h"
+
 #include "common/nds_loader_arm9.h"
 #include "common/inifile.h"
 #include "common/nitrofs.h"
@@ -42,7 +44,6 @@
 #include "common/pergamesettings.h"
 #include "common/cardlaunch.h"
 #include "common/flashcard.h"
-#include "common/fileCopy.h"
 #include "bootstrapsettings.h"
 #include "bootsplash.h"
 #include "twlmenuppvideo.h"

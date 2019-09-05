@@ -36,9 +36,10 @@
 
 #include "graphics/fontHandler.h"
 
+#include "fileCopy.h"
+
 #include "common/nds_loader_arm9.h"
 #include "common/inifile.h"
-#include "common/fileCopy.h"
 #include "common/nitrofs.h"
 #include "common/bootstrappaths.h"
 #include "common/dsimenusettings.h"
