@@ -1,8 +1,7 @@
 //# Stuff you may not have yet.
 
-#ifndef TONCCPY_H
-#define TONCCPY_H
-
+#ifndef __ROMSEL_COMMON_TONCCPY_H__
+#define __ROMSEL_COMMON_TONCCPY_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,4 +39,5 @@ static inline void toncset32(void *dst, u32 src, uint size)
 #ifdef __cplusplus
 }
 #endif
-#endif
+
+#endif /* __ROMSEL_COMMON_TONCCPY_H__ */
