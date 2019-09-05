@@ -40,7 +40,7 @@
 
 #include "common/nds_loader_arm9.h"
 #include "common/inifile.h"
-#include "common/nitrofs.h"
+#include "nitrofs.h"
 #include "common/bootstrappaths.h"
 #include "common/dsimenusettings.h"
 #include "common/cardlaunch.h"

@@ -36,7 +36,7 @@
 #include "graphics/graphics.h"
 #include "graphics/topText.h"
 
-#include "common/nitrofs.h"
+#include "nitrofs.h"
 #include "nds_loader_arm9.h"
 #include "errorScreen.h"
 

@@ -39,7 +39,7 @@
 
 #include "common/dsimenusettings.h"
 #include "common/flashcard.h"
-#include "common/nitrofs.h"
+#include "nitrofs.h"
 #include "common/systemdetails.h"
 #include "graphics/ThemeConfig.h"
 #include "graphics/ThemeTextures.h"

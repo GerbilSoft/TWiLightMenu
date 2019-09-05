@@ -38,7 +38,7 @@
 #include "graphics/graphics.h"
 
 #include "tonccpy.h"
-#include "common/nitrofs.h"
+#include "nitrofs.h"
 #include "flashcard.h"
 #include "gbaswitch.h"
 #include "nds_loader_arm9.h"
