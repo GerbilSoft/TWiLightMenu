@@ -57,7 +57,7 @@
 #include "language.h"
 #include "unicode.h"
 
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 using namespace akui;
 
@@ -299,7 +299,7 @@ bool MainList::enterDir(const std::string &dirName)
     {
         nocashMessage(dirName.c_str());
         _currentDir = std::string(dirName);
-        
+
         while ((direntry = readdir(dir)) != NULL)
         {
             toncset(lfnBuf, 0, sizeof(lfnBuf));

@@ -19,9 +19,9 @@
 #ifndef __GAMECODE_H__
 #define __GAMECODE_H__
 
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
-inline u32 gamecode(const char *aGameCode)
+static inline u32 gamecode(const char *aGameCode)
 {
     u32 gameCode;
     tonccpy(&gameCode, aGameCode, sizeof(gameCode));

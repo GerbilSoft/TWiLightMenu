@@ -57,7 +57,7 @@
 #include "graphics/iconHandler.h"
 
 #include "common/inifile.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 #include "sound.h"
 #include "language.h"

@@ -54,7 +54,7 @@
 #include <errno.h>
 #include <nds.h>
 #include "nitrofs.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 //This seems to be a typo! memory.h has REG_EXEMEMCNT
 #ifndef REG_EXMEMCNT

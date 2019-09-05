@@ -37,7 +37,7 @@
 
 #include "graphics/graphics.h"
 
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 #include "common/nitrofs.h"
 #include "flashcard.h"
 #include "gbaswitch.h"

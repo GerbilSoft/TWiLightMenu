@@ -5,7 +5,6 @@
 // #include "soundbank_bin.h"
 #include "streamingaudio.h"
 #include "string.h"
-#include "common/tonccpy.h"
 #include <algorithm>
 
 #define SFX_STARTUP		0

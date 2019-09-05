@@ -7,7 +7,7 @@
 #include <malloc.h>
 
 #include <string>
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 using std::string;
 char date_str[24] = {'\0'};

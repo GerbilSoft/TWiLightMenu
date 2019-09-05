@@ -20,7 +20,7 @@
 
 #include <string.h> //memset
 #include "datetime.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 const char * DateTime::weekdayStrings[]= { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
 void DateTime::FillTimeParts(void)

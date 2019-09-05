@@ -1,6 +1,6 @@
 #include "dsiiconsequence.h"
 #include <nds.h>
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 DSiIconSequence::DSiIconSequence()
 {

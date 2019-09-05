@@ -1,5 +1,4 @@
 #include "streamingaudio.h"
-#include "common/tonccpy.h"
 
 // Private members
 

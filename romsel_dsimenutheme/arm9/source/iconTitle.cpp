@@ -29,7 +29,7 @@
 #include "graphics/queueControl.h"
 #include "graphics/ThemeTextures.h"
 #include "language.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 #include <ctype.h>
 #include <nds.h>
 #include <stdio.h>

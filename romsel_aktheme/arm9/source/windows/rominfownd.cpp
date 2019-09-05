@@ -31,7 +31,7 @@
 #include "language.h"
 #include "unicode.h"
 #include "ui/binaryfind.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 using namespace akui;
 

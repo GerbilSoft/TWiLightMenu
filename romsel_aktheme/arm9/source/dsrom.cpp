@@ -34,7 +34,7 @@
 #include "icon_bg_bin.h"
 #include "gamecode.h"
 
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 #include <memory>
 
 static u32 arm9StartSig[4];

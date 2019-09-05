@@ -18,7 +18,7 @@
 #include "uvcoord_date_time_font.h"
 #include "uvcoord_top_font.h"
 #include "common/lzss.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 #include "graphics/lodepng.h"
 
 
@@ -886,7 +886,7 @@ void ThemeTextures::drawTopBgAvoidingShoulders() {
 
  	// Copy top 32 lines from the buffer into the sub.
 	tonccpy(_bgSubBuffer, _bmpImageBuffer, sizeof(u16) * TOPLINES);
-	
+
 	// Copy bottom tc().shoulderLRenderY() + 5 lines into the sub
 	// ((192 - 32) * 256)
 	tonccpy(_bgSubBuffer + BOTTOMOFFSET, _bmpImageBuffer + BOTTOMOFFSET, sizeof(u16) * BOTTOMLINES);

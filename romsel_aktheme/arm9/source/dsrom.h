@@ -25,7 +25,7 @@
 #include <string.h>
 #include "saveinfo.h"
 #include "drawing/gdi.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 #include "unknown_banner_bin.h"
 #include <memory>
 

@@ -35,14 +35,14 @@
 #include "graphics/graphics.h"
 #include "graphics/ThemeTextures.h"
 #include "errorScreen.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 
 extern bool dbox_showIcon;
 
 CheatCodelist::~CheatCodelist(void) {}
 
-inline u32 gamecode(const char *aGameCode)
+static inline u32 gamecode(const char *aGameCode)
 {
     u32 gameCode;
     tonccpy(&gameCode, aGameCode, sizeof(gameCode));

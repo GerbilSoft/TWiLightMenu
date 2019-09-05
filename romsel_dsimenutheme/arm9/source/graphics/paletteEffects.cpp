@@ -1,7 +1,7 @@
 #include "paletteEffects.h"
 #include "string.h"
 #include "tool/colortool.h"
-#include "common/tonccpy.h"
+#include "tonccpy.h"
 
 void effectDSiArrowButtonPalettes(u16* palette, u8 paletteLength)
 {

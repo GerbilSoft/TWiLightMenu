@@ -4,7 +4,6 @@
 #include <maxmod9.h>
 
 #include "common/lzss.h"
-#include "common/tonccpy.h"
 #include "common/dsimenusettings.h"
 #include "common/systemdetails.h"
 
