@@ -1,5 +1,5 @@
 /*
-LodePNG version 20190210
+LodePNG version 20190914
 
 Copyright (c) 2005-2019 Lode Vandevenne
 
@@ -95,13 +95,19 @@ source files with custom allocators.*/
 #endif /*LODEPNG_COMPILE_CPP*/
 
 #ifdef LODEPNG_COMPILE_PNG
-/*The PNG color types (also used for raw).*/
+/*The PNG color types (also used for raw image).*/
 typedef enum LodePNGColorType {
   LCT_GREY = 0, /*grayscale: 1,2,4,8,16 bit*/
   LCT_RGB = 2, /*RGB: 8,16 bit*/
   LCT_PALETTE = 3, /*palette: 1,2,4,8 bit*/
   LCT_GREY_ALPHA = 4, /*grayscale with alpha: 8,16 bit*/
-  LCT_RGBA = 6 /*RGB with alpha: 8,16 bit*/
+  LCT_RGBA = 6, /*RGB with alpha: 8,16 bit*/
+  /*LCT_MAX_OCTET_VALUE lets the compiler allow this enum to represent any invalid
+  byte value from 0 to 255 that could be present in an invalid PNG file header. Do
+  not use, compare with or set the name LCT_MAX_OCTET_VALUE, instead either use
+  the valid color type names above, or numeric values like 1 or 7 when checking for
+  particular disallowed color type byte values, or cast to integer to print it.*/
+  LCT_MAX_OCTET_VALUE = 255
 } LodePNGColorType;
 
 #ifdef LODEPNG_COMPILE_DECODER
@@ -262,14 +268,14 @@ typedef struct LodePNGDecompressSettings LodePNGDecompressSettings;
 struct LodePNGDecompressSettings {
   /* Check LodePNGDecoderSettings for more ignorable errors such as ignore_crc */
   unsigned ignore_adler32; /*if 1, continue and don't give an error message if the Adler32 checksum is corrupted*/
+  unsigned ignore_nlen; /*ignore complement of len checksum in uncompressed blocks*/
 
   /*use custom zlib decoder instead of built in one (default: null)*/
   unsigned (*custom_zlib)(unsigned char**, size_t*,
                           const unsigned char*, size_t,
                           const LodePNGDecompressSettings*);
   /*use custom deflate decoder instead of built in one (default: null)
-  if custom_zlib is used, custom_deflate is ignored since only the built in
-  zlib function will call custom_deflate*/
+  if custom_zlib is not null, custom_inflate is ignored (the zlib format uses deflate)*/
   unsigned (*custom_inflate)(unsigned char**, size_t*,
                              const unsigned char*, size_t,
                              const LodePNGDecompressSettings*);
@@ -643,7 +649,12 @@ void lodepng_decoder_settings_init(LodePNGDecoderSettings* settings);
 /*automatically use color type with less bits per pixel if losslessly possible. Default: AUTO*/
 typedef enum LodePNGFilterStrategy {
   /*every filter at zero*/
-  LFS_ZERO,
+  LFS_ZERO = 0,
+  /*every filter at 1, 2, 3 or 4 (paeth), unlike LFS_ZERO not a good choice, but for testing*/
+  LFS_ONE = 1,
+  LFS_TWO = 2,
+  LFS_THREE = 3,
+  LFS_FOUR = 4,
   /*Use filter that gives minimum sum, as described in the official PNG filter heuristic.*/
   LFS_MINSUM,
   /*Use the filter type that gives smallest Shannon entropy for this scanline. Depending
@@ -660,35 +671,40 @@ typedef enum LodePNGFilterStrategy {
 
 /*Gives characteristics about the integer RGBA colors of the image (count, alpha channel usage, bit depth, ...),
 which helps decide which color model to use for encoding.
-Used internally by default if "auto_convert" is enabled. Public because it's useful for custom algorithms.
-NOTE: This is not related to the ICC color profile, search "iccp_profile" instead to find the ICC/chromacity/...
-fields in this header file.*/
-typedef struct LodePNGColorProfile {
+Used internally by default if "auto_convert" is enabled. Public because it's useful for custom algorithms.*/
+typedef struct LodePNGColorStats {
   unsigned colored; /*not grayscale*/
   unsigned key; /*image is not opaque and color key is possible instead of full alpha*/
   unsigned short key_r; /*key values, always as 16-bit, in 8-bit case the byte is duplicated, e.g. 65535 means 255*/
   unsigned short key_g;
   unsigned short key_b;
   unsigned alpha; /*image is not opaque and alpha channel or alpha palette required*/
-  unsigned numcolors; /*amount of colors, up to 257. Not valid if bits == 16.*/
-  unsigned char palette[1024]; /*Remembers up to the first 256 RGBA colors, in no particular order*/
+  unsigned numcolors; /*amount of colors, up to 257. Not valid if bits == 16 or allow_palette is disabled.*/
+  unsigned char palette[1024]; /*Remembers up to the first 256 RGBA colors, in no particular order, only valid when numcolors is valid*/
   unsigned bits; /*bits per channel (not for palette). 1,2 or 4 for grayscale only. 16 if 16-bit per channel required.*/
   size_t numpixels;
-} LodePNGColorProfile;
 
-void lodepng_color_profile_init(LodePNGColorProfile* profile);
+  /*user settings for computing/using the stats*/
+  unsigned allow_palette; /*default 1. if 0, disallow choosing palette colortype in auto_choose_color, and don't count numcolors*/
+  unsigned allow_greyscale; /*default 1. if 0, choose RGB or RGBA even if the image only has gray colors*/
+} LodePNGColorStats;
 
-/*Get a LodePNGColorProfile of the image. The profile must already have been inited.
-NOTE: This is not related to the ICC color profile, search "iccp_profile" instead to find the ICC/chromacity/...
-fields in this header file.*/
-unsigned lodepng_get_color_profile(LodePNGColorProfile* profile,
-                                   const unsigned char* image, unsigned w, unsigned h,
-                                   const LodePNGColorMode* mode_in);
-/*The function LodePNG uses internally to decide the PNG color with auto_convert.
-Chooses an optimal color model, e.g. gray if only gray pixels, palette if < 256 colors, ...*/
+void lodepng_color_stats_init(LodePNGColorStats* stats);
+
+/*Get a LodePNGColorStats of the image. The stats must already have been inited.*/
+void lodepng_compute_color_stats(LodePNGColorStats* stats,
+                                 const unsigned char* image, unsigned w, unsigned h,
+                                 const LodePNGColorMode* mode_in);
+/*Computes a minimal PNG color model that can contain all colors as indicated by the stats and it settings.
+The stats should be computed with lodepng_compute_color_stats.
+mode_in is raw color profile of the image the stats were computed on, to copy palette order from when relevant.
+Minimal PNG color model means the color type and bit depth that gives smallest amount of bits in the output image,
+e.g. gray if only grayscale pixels, palette if less than 256 colors, color key if only single transparent color, ...
+LodePNG uses this function internally if auto_convert is enabled (it is by default).
+*/
 unsigned lodepng_auto_choose_color(LodePNGColorMode* mode_out,
-                                   const unsigned char* image, unsigned w, unsigned h,
-                                   const LodePNGColorMode* mode_in);
+                                   const LodePNGColorMode* mode_in,
+                                   const LodePNGColorMode* stats);
 
 /*Settings for the encoder.*/
 typedef struct LodePNGEncoderSettings {
@@ -1768,6 +1784,12 @@ yyyymmdd.
 Some changes aren't backwards compatible. Those are indicated with a (!)
 symbol.
 
+Not all changes are listed here, the commit history in github lists more:
+https://github.com/lvandeve/lodepng
+
+*) 14 aug 2019: around 25% faster decoding thanks to huffman lookup tables.
+*) 15 jun 2019 (!): auto_choose_color API changed (for bugfix: don't use palette
+   if gray ICC profile) and non-ICC LodePNGColorProfile renamed to LodePNGColorStats.
 *) 30 dec 2018: code style changes only: removed newlines before opening braces.
 *) 10 sep 2018: added way to inspect metadata chunks without full decoding.
 *) 19 aug 2018 (!): fixed color mode bKGD is encoded with and made it use
@@ -1784,6 +1806,7 @@ symbol.
 *) 08 dec 2015: Made load_file function return error if file can't be opened.
 *) 24 okt 2015: Bugfix with decoding to palette output.
 *) 18 apr 2015: Boundary PM instead of just package-merge for faster encoding.
+*) 24 aug 2014: Moved to github
 *) 23 aug 2014: Reduced needless memory usage of decoder.
 *) 28 jun 2014: Removed fix_png setting, always support palette OOB for
     simplicity. Made ColorProfile public.
